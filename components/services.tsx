@@ -1,103 +1,469 @@
-import { Droplets, Sparkles, Leaf } from "lucide-react"
-import Link from "next/link"
+"use client"
 
-const services = [
+import { useState, useEffect, useCallback } from "react"
+import Image from "next/image"
+import Link from "next/link"
+import { X, CheckCircle2, Clock, ArrowRight } from "lucide-react"
+
+const WA = "https://wa.me/5515996369065?text=Olá!%20Gostaria%20de%20agendar%20um%20horário."
+
+/* ── Ícones ── */
+function LotusIcon({ className = "w-9 h-9" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} aria-hidden="true">
+      <ellipse cx="20" cy="30" rx="12" ry="6" stroke="currentColor" strokeWidth="1.4" />
+      <path d="M20 30 C20 20 10 14 8 8 C14 12 18 18 20 24 C22 18 26 12 32 8 C30 14 20 20 20 30Z" stroke="currentColor" strokeWidth="1.4" fill="none" />
+      <line x1="20" y1="8" x2="20" y2="30" stroke="currentColor" strokeWidth="1" />
+    </svg>
+  )
+}
+function WaxIcon({ className = "w-9 h-9" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} aria-hidden="true">
+      <line x1="14" y1="8" x2="22" y2="32" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="26" y1="8" x2="18" y2="32" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="14" y1="20" x2="26" y2="20" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+    </svg>
+  )
+}
+function MassageIcon({ className = "w-9 h-9" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} aria-hidden="true">
+      <path d="M8 28 C12 20 20 18 28 20 C34 22 36 28 32 32" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M8 22 C14 16 22 15 30 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <circle cx="30" cy="13" r="4" stroke="currentColor" strokeWidth="1.4" />
+    </svg>
+  )
+}
+function BrowIcon({ className = "w-9 h-9" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} aria-hidden="true">
+      <path d="M6 16 C10 10 18 8 26 12 C30 14 32 16 34 16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      <ellipse cx="20" cy="24" rx="9" ry="6" stroke="currentColor" strokeWidth="1.4" />
+      <circle cx="20" cy="24" r="3" stroke="currentColor" strokeWidth="1.2" />
+    </svg>
+  )
+}
+
+type Service = {
+  id: string
+  Icon: ({ className }: { className?: string }) => React.JSX.Element
+  title: string
+  tagline: string
+  description: string
+  image: string
+  imageAlt: string
+  duration: string
+  benefits: string[]
+  details: string
+  includes: string[]
+}
+
+const services: Service[] = [
   {
-    icon: Droplets,
+    id: "massagem",
+    Icon: MassageIcon,
+    title: "Massagem",
+    tagline: "Alívio do estresse, relaxamento e bem-estar para o corpo e a mente.",
+    description:
+      "Nossa massagem terapêutica combina técnicas relaxantes e modeladoras para proporcionar bem-estar completo. Ideal para aliviar tensões, melhorar a circulação e renovar as energias.",
+    image: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?w=800&q=80&auto=format&fit=crop",
+    imageAlt: "Massagem relaxante nas costas",
+    duration: "60 a 90 min",
+    benefits: [
+      "Alívio de tensões musculares e dores crônicas",
+      "Redução do estresse e ansiedade",
+      "Melhora da circulação sanguínea e linfática",
+      "Relaxamento profundo do sistema nervoso",
+      "Estímulo à produção de endorfinas",
+      "Sensação imediata de leveza e bem-estar",
+    ],
+    details:
+      "Realizamos diferentes tipos de massagem: relaxante, modeladora e drenagem linfática. O protocolo é escolhido conforme a necessidade de cada cliente para garantir o melhor resultado.",
+    includes: [
+      "Avaliação inicial das necessidades",
+      "Uso de óleos essenciais premium",
+      "Ambiente climatizado e acolhedor",
+      "Toalhas aquecidas",
+    ],
+  },
+  {
+    id: "depilacao",
+    Icon: WaxIcon,
+    title: "Depilação",
+    tagline: "Pele lisa, macia e livre de preocupações.",
+    description:
+      "Depilação com cera profissional que remove os pelos pela raiz, garantindo resultados duradouros e pele incrivelmente macia. Técnica precisa para o menor desconforto possível.",
+    image: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800&q=80&auto=format&fit=crop",
+    imageAlt: "Depilação profissional com cera",
+    duration: "30 a 60 min",
+    benefits: [
+      "Pele lisa e macia por semanas",
+      "Redução progressiva dos pelos com o uso regular",
+      "Menos pelos encravados comparado à lâmina",
+      "Remoção pela raiz para resultado duradouro",
+      "Técnica que minimiza o desconforto",
+      "Pele hidratada após o procedimento",
+    ],
+    details:
+      "Utilizamos cera quente e cera fria de alta qualidade, adequadas para cada região do corpo e tipo de pele. O procedimento é realizado com total higiene e cuidado com sua pele.",
+    includes: [
+      "Higienização da área antes do procedimento",
+      "Cera premium de qualidade profissional",
+      "Finalização calmante para a pele",
+      "Orientações pós-depilação",
+    ],
+  },
+  {
+    id: "limpeza-de-pele",
+    Icon: LotusIcon,
     title: "Limpeza de Pele",
+    tagline: "Pele limpa, saudável e radiante com o cuidado que você merece.",
     description:
-      "Tratamento completo para remover impurezas, cravos e células mortas, deixando sua pele renovada e radiante.",
-    benefits: ["Pele renovada", "Poros desobstruídos", "Luminosidade"],
-    price: "A partir de R$ 120",
+      "Limpeza de pele profunda com técnicas estéticas avançadas. Remove impurezas, cravos e células mortas, revelando uma pele mais luminosa, uniforme e saudável desde a primeira sessão.",
+    image: "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=800&q=80&auto=format&fit=crop",
+    imageAlt: "Limpeza de pele facial profissional",
+    duration: "60 a 75 min",
+    benefits: [
+      "Remoção profunda de cravos e impurezas",
+      "Desobstrução completa dos poros",
+      "Luminosidade e uniformidade da pele",
+      "Estimula a renovação celular",
+      "Prepara a pele para absorver melhor os ativos",
+      "Redução da oleosidade e de manchas",
+    ],
+    details:
+      "O protocolo inclui higienização, esfoliação, vapor, extração de cravos e comedões, aplicação de máscara e hidratação final. Cada etapa é personalizada conforme o seu tipo de pele.",
+    includes: [
+      "Análise de pele antes do procedimento",
+      "Esfoliação e vapor facial",
+      "Extração profissional segura",
+      "Máscara calmante personalizada",
+      "Hidratação e proteção solar final",
+    ],
   },
   {
-    icon: Sparkles,
-    title: "Depilação com Cera",
+    id: "design-de-sobrancelhas",
+    Icon: BrowIcon,
+    title: "Design de Sobrancelhas",
+    tagline: "Sobrancelhas que valorizam seu olhar e realçam sua beleza.",
     description:
-      "Depilação profissional com cera de alta qualidade. Resultados duradouros, pele macia e lisinha por mais tempo.",
-    benefits: ["Resultados duradouros", "Elimina pelos pela raiz", "Menos pelos encravados"],
-    price: "Consulte valores",
-  },
-  {
-    icon: Leaf,
-    title: "Estética Facial",
-    description:
-      "Tratamentos faciais especializados para rejuvenescimento, hidratação profunda e cuidados anti-idade.",
-    benefits: ["Rejuvenescimento", "Hidratação profunda", "Anti-idade"],
-    price: "A partir de R$ 150",
+      "Design de sobrancelhas personalizado que respeita as características do seu rosto, realçando o seu olhar de forma natural e harmoniosa. Técnica precisa para um resultado impecável.",
+    image: "https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=800&q=80&auto=format&fit=crop",
+    imageAlt: "Design de sobrancelhas profissional",
+    duration: "30 a 45 min",
+    benefits: [
+      "Formato personalizado para o seu rosto",
+      "Realça e emoldura o olhar naturalmente",
+      "Simetria e harmonia facial",
+      "Acabamento preciso e duradouro",
+      "Técnica que respeita a estrutura natural",
+      "Rejuvenescimento facial imediato",
+    ],
+    details:
+      "O design começa com uma análise do formato do seu rosto e estrutura óssea. Usamos técnicas de medição profissional para garantir simetria e o formato ideal que realce a sua beleza.",
+    includes: [
+      "Mapeamento facial individualizado",
+      "Técnica de linha a linha",
+      "Acabamento com henna opcional",
+      "Orientações de manutenção em casa",
+    ],
   },
 ]
 
-export function Services() {
+/* ── Modal de serviço ── */
+function ServiceModal({
+  service,
+  onClose,
+}: {
+  service: Service
+  onClose: () => void
+}) {
+  // fecha com ESC
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose() }
+    document.addEventListener("keydown", onKey)
+    document.body.style.overflow = "hidden"
+    return () => {
+      document.removeEventListener("keydown", onKey)
+      document.body.style.overflow = ""
+    }
+  }, [onClose])
+
+  const waLink = `https://wa.me/5515996369065?text=Olá!%20Gostaria%20de%20agendar%20${encodeURIComponent(service.title)}.`
+
   return (
-    <section id="servicos" className="py-20 md:py-32 bg-background">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <p className="text-primary font-medium uppercase tracking-wider text-sm mb-4">
-            Nossos Serviços
-          </p>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-foreground mb-6 text-balance">
-            Tratamentos especializados para você
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Oferecemos uma variedade de tratamentos estéticos de alta qualidade,
-            personalizados para realçar sua beleza natural.
-          </p>
+    <div
+      className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-label={`Detalhes: ${service.title}`}
+    >
+      {/* Overlay */}
+      <div
+        className="absolute inset-0 bg-foreground/60 backdrop-blur-sm"
+        onClick={onClose}
+        aria-hidden="true"
+      />
+
+      {/* Painel */}
+      <div className="relative z-10 w-full sm:max-w-2xl max-h-[92dvh] sm:max-h-[88vh] bg-card rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden">
+
+        {/* Imagem topo */}
+        <div className="relative h-44 sm:h-56 shrink-0">
+          <Image
+            src={service.image}
+            alt={service.imageAlt}
+            fill
+            className="object-cover"
+            sizes="(max-width: 640px) 100vw, 672px"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent" />
+
+          {/* Fechar */}
+          <button
+            onClick={onClose}
+            aria-label="Fechar"
+            className="absolute top-4 right-4 w-8 h-8 rounded-full bg-card/80 backdrop-blur-sm flex items-center justify-center text-foreground hover:bg-card transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
+
+          {/* Ícone e título sobrepostos */}
+          <div className="absolute bottom-4 left-5 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-card/90 backdrop-blur-sm flex items-center justify-center text-primary border border-border">
+              <service.Icon className="w-5 h-5" />
+            </div>
+            <div>
+              <p className="text-xs tracking-[0.2em] uppercase text-primary font-medium">Serviço</p>
+              <h2 className="text-lg font-serif font-bold text-card-foreground leading-tight">{service.title}</h2>
+            </div>
+          </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((service, index) => (
-            <div
-              key={index}
-              className="group bg-card rounded-2xl p-8 border border-border hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300"
+        {/* Conteúdo com scroll */}
+        <div className="overflow-y-auto flex-1 p-5 sm:p-7">
+
+          {/* Duração */}
+          <div className="flex items-center gap-2 text-muted-foreground text-xs mb-4">
+            <Clock className="w-3.5 h-3.5 text-primary" />
+            <span>Duração média: <strong className="text-foreground">{service.duration}</strong></span>
+          </div>
+
+          {/* Descrição */}
+          <p className="text-foreground/80 text-sm leading-relaxed mb-6">{service.description}</p>
+
+          {/* Benefícios */}
+          <div className="mb-6">
+            <h3 className="text-xs font-medium tracking-[0.2em] uppercase text-primary mb-3">Benefícios</h3>
+            <ul className="grid sm:grid-cols-2 gap-2">
+              {service.benefits.map((b) => (
+                <li key={b} className="flex items-start gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                  <span className="text-sm text-foreground/75">{b}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* O que está incluso */}
+          <div className="bg-secondary/50 rounded-2xl p-4 mb-6">
+            <h3 className="text-xs font-medium tracking-[0.2em] uppercase text-primary mb-3">O que está incluso</h3>
+            <ul className="space-y-2">
+              {service.includes.map((inc) => (
+                <li key={inc} className="flex items-center gap-2.5 text-sm text-foreground/75">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                  {inc}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Detalhes */}
+          <p className="text-sm text-muted-foreground leading-relaxed mb-6">{service.details}</p>
+
+          {/* CTAs */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Link
+              href="/agendar"
+              className="flex-1 inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 py-3.5 rounded-full text-sm font-medium hover:opacity-90 transition-opacity"
             >
-              <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
-                <service.icon className="w-8 h-8 text-primary" />
-              </div>
-
-              <h3 className="text-xl font-serif font-bold text-foreground mb-3">
-                {service.title}
-              </h3>
-              <p className="text-muted-foreground mb-6 leading-relaxed">
-                {service.description}
-              </p>
-
-              <ul className="space-y-2 mb-6">
-                {service.benefits.map((benefit, i) => (
-                  <li key={i} className="flex items-center gap-2 text-sm text-foreground/80">
-                    <svg
-                      className="w-4 h-4 text-primary shrink-0"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    {benefit}
-                  </li>
-                ))}
-              </ul>
-
-              <div className="pt-4 border-t border-border flex items-center justify-between">
-                <span className="font-semibold text-primary">{service.price}</span>
-                <Link
-                  href="https://wa.me/5515991176219"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-medium text-foreground/70 hover:text-primary transition-colors"
-                >
-                  Agendar →
-                </Link>
-              </div>
-            </div>
-          ))}
+              Agendar Online
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              href={waLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 inline-flex items-center justify-center gap-2 border border-primary/40 text-primary px-6 py-3.5 rounded-full text-sm font-medium hover:bg-primary/5 transition-colors"
+            >
+              WhatsApp
+            </Link>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
+  )
+}
+
+/* ── Card vertical (top 3) ── */
+function ServiceCard({
+  service,
+  onClick,
+}: {
+  service: Service
+  onClick: () => void
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className="group bg-card rounded-2xl overflow-hidden border border-border hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 text-left w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      aria-label={`Ver detalhes: ${service.title}`}
+    >
+      <div className="relative h-44 sm:h-48 overflow-hidden">
+        <Image
+          src={service.image}
+          alt={service.imageAlt}
+          fill
+          className="object-cover group-hover:scale-105 transition-transform duration-500"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        />
+        <div className="absolute inset-0 bg-foreground/10 group-hover:bg-foreground/5 transition-colors" />
+      </div>
+
+      <div className="flex justify-center -mt-5 relative z-10">
+        <div className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center text-primary shadow-sm">
+          <service.Icon className="w-5 h-5" />
+        </div>
+      </div>
+
+      <div className="p-5 pt-3 text-center">
+        <h3 className="text-xs font-medium tracking-[0.2em] uppercase text-primary mb-2">{service.title}</h3>
+        <p className="text-muted-foreground text-xs leading-relaxed mb-4">{service.tagline}</p>
+        <span className="inline-flex items-center gap-1.5 text-xs font-medium text-primary border border-primary/30 px-4 py-1.5 rounded-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+          Ver detalhes
+        </span>
+      </div>
+    </button>
+  )
+}
+
+/* ── Card horizontal (4º serviço) ── */
+function ServiceCardWide({
+  service,
+  onClick,
+}: {
+  service: Service
+  onClick: () => void
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className="group bg-card rounded-2xl overflow-hidden border border-border hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 flex w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      aria-label={`Ver detalhes: ${service.title}`}
+    >
+      <div className="relative w-2/5 sm:w-1/2 shrink-0">
+        <Image
+          src={service.image}
+          alt={service.imageAlt}
+          fill
+          className="object-cover group-hover:scale-105 transition-transform duration-500"
+          sizes="(max-width: 640px) 40vw, 25vw"
+        />
+        <div className="absolute inset-0 bg-foreground/10 group-hover:bg-foreground/5 transition-colors" />
+      </div>
+      <div className="p-5 sm:p-6 flex flex-col justify-center">
+        <div className="flex items-center gap-2 mb-2">
+          <div className="text-primary"><service.Icon className="w-6 h-6" /></div>
+          <h3 className="text-xs font-medium tracking-[0.2em] uppercase text-primary">{service.title}</h3>
+        </div>
+        <p className="text-muted-foreground text-xs leading-relaxed mb-4">{service.tagline}</p>
+        <span className="self-start inline-flex items-center gap-1.5 text-xs font-medium text-primary border border-primary/30 px-4 py-1.5 rounded-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+          Ver detalhes
+        </span>
+      </div>
+    </button>
+  )
+}
+
+/* ── Componente principal ── */
+export function Services() {
+  const [activeService, setActiveService] = useState<Service | null>(null)
+
+  const closeModal = useCallback(() => setActiveService(null), [])
+
+  return (
+    <>
+      <section id="servicos" className="py-16 sm:py-24 md:py-32 bg-background">
+        <div className="container mx-auto px-4 sm:px-6">
+
+          {/* Cabeçalho */}
+          <div className="text-center mb-12 sm:mb-16">
+            <div className="flex items-center justify-center gap-4 mb-4">
+              <div className="h-px bg-primary/40 w-8 sm:w-12" />
+              <p className="text-primary text-xs font-medium tracking-[0.3em] uppercase">Nossos Serviços</p>
+              <div className="h-px bg-primary/40 w-8 sm:w-12" />
+            </div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-foreground mb-4 text-balance">
+              Tratamentos especializados para você
+            </h2>
+            <p className="text-muted-foreground text-base sm:text-lg max-w-xl mx-auto">
+              Clique em qualquer serviço para conhecer todos os benefícios e detalhes.
+            </p>
+          </div>
+
+          {/* Grid de cards */}
+          <div className="space-y-4 sm:space-y-6">
+            {/* 3 cards no topo */}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {services.slice(0, 3).map((service) => (
+                <ServiceCard
+                  key={service.id}
+                  service={service}
+                  onClick={() => setActiveService(service)}
+                />
+              ))}
+            </div>
+
+            {/* Linha inferior: card wide + CTA */}
+            <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
+              <ServiceCardWide
+                service={services[3]}
+                onClick={() => setActiveService(services[3])}
+              />
+              <div className="bg-primary rounded-2xl p-6 sm:p-8 flex flex-col justify-center text-primary-foreground">
+                <p className="font-serif italic text-xl sm:text-2xl md:text-3xl mb-3 text-balance">
+                  Cuidado que transforma.
+                </p>
+                <p className="text-primary-foreground/80 mb-6 leading-relaxed text-sm sm:text-base">
+                  Resultados que elevam sua autoestima. Agende agora e viva a experiência de se cuidar.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Link
+                    href="/agendar"
+                    className="inline-flex items-center justify-center gap-2 bg-card text-foreground px-6 py-3 rounded-full text-sm font-medium hover:bg-card/90 transition-colors"
+                  >
+                    Agendar Online
+                  </Link>
+                  <Link
+                    href={WA}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 border border-primary-foreground/30 text-primary-foreground px-6 py-3 rounded-full text-sm font-medium hover:bg-primary-foreground/10 transition-colors"
+                  >
+                    WhatsApp
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Modal */}
+      {activeService && (
+        <ServiceModal service={activeService} onClose={closeModal} />
+      )}
+    </>
   )
 }

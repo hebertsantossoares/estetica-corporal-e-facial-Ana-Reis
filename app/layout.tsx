@@ -1,60 +1,59 @@
 import type { Metadata, Viewport } from 'next'
-import { Playfair_Display, Inter } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
+import { Playfair_Display, Lato } from 'next/font/google'
 import './globals.css'
+import { ThemeProvider } from '@/components/theme-provider'
 
-const playfair = Playfair_Display({ 
-  subsets: ["latin"],
+const playfair = Playfair_Display({
+  subsets: ['latin'],
   variable: '--font-playfair',
   display: 'swap',
 })
 
-const inter = Inter({ 
-  subsets: ["latin"],
-  variable: '--font-inter',
+const lato = Lato({
+  subsets: ['latin'],
+  weight: ['300', '400', '700'],
+  variable: '--font-lato',
   display: 'swap',
 })
 
 export const metadata: Metadata = {
-  title: 'Ana Reis | Estética Corporal e Facial',
-  description: 'Limpeza de pele, depilação com cera e tratamentos faciais. Pele bem cuidada, sem complicação. Agende seu horário pelo WhatsApp.',
-  keywords: ['estética', 'limpeza de pele', 'depilação', 'tratamento facial', 'beleza', 'skincare'],
-  generator: 'v0.app',
-  icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
-  },
+  title: 'Studio Ana Reis | Estética Corporal e Facial',
+  description:
+    'Massagem, depilação com cera, limpeza de pele e design de sobrancelhas. Beleza, cuidado e bem-estar em um só lugar. Agende pelo WhatsApp.',
+  keywords: [
+    'estética',
+    'limpeza de pele',
+    'depilação',
+    'massagem',
+    'design de sobrancelhas',
+    'beleza',
+    'Sorocaba',
+  ],
 }
 
 export const viewport: Viewport = {
-  themeColor: '#d4a574',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f9f4ee' },
+    { media: '(prefers-color-scheme: dark)',  color: '#1e1a16' },
+  ],
   width: 'device-width',
   initialScale: 1,
 }
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-BR" className="bg-background">
-      <body className={`${playfair.variable} ${inter.variable} font-sans antialiased`}>
-        {children}
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+    <html lang="pt-BR" suppressHydrationWarning>
+      <body className={`${playfair.variable} ${lato.variable} font-sans antialiased bg-background text-foreground`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange={false}
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )

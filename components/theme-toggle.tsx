@@ -1,0 +1,26 @@
+"use client"
+
+import { useTheme } from "next-themes"
+import { useEffect, useState } from "react"
+import { Sun, Moon } from "lucide-react"
+
+export function ThemeToggle() {
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => setMounted(true), [])
+
+  if (!mounted) {
+    return <div className="w-9 h-9" aria-hidden="true" />
+  }
+
+  return (
+    <button
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      aria-label={theme === "dark" ? "Ativar modo claro" : "Ativar modo escuro"}
+      className="w-9 h-9 rounded-full border border-border flex items-center justify-center text-foreground/70 hover:text-primary hover:border-primary/40 transition-colors"
+    >
+      {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+    </button>
+  )
+}

@@ -12,78 +12,61 @@ function WhatsAppIcon({ className }: { className?: string }) {
 }
 
 const infoCards = [
-  {
-    Icon: WhatsAppIcon,
-    label: "WhatsApp",
-    value: "(15) 99636-9065",
-    href: WA,
-  },
-  {
-    Icon: MapPin,
-    label: "Endereço",
-    value: "Rua Elisete Cardoso, 86 — Sala 2\nJúlio de Mesquita, Sorocaba – SP",
-    href: "https://maps.google.com/?q=Rua+Elisete+Cardoso+86+Sorocaba+SP",
-  },
-  {
-    Icon: Instagram,
-    label: "Instagram",
-    value: "@studioanareis",
-    href: "https://instagram.com/studioanareis",
-  },
+  { Icon: WhatsAppIcon, label: "WhatsApp", value: "(15) 99636-9065",                                            href: WA },
+  { Icon: MapPin,       label: "Endereço", value: "Rua Elisete Cardoso, 86 — Sala 2\nJúlio de Mesquita, Sorocaba – SP", href: "https://maps.google.com/?q=Rua+Elisete+Cardoso+86+Sorocaba+SP" },
+  { Icon: Instagram,    label: "Instagram",value: "@studioanareis",                                             href: "https://instagram.com/studioanareis" },
 ]
 
 export function Contact() {
   return (
-    <section id="contato" className="py-20 md:py-32 bg-background">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+    <section id="contato" className="py-16 sm:py-24 md:py-32 bg-background">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="text-center mb-10 sm:mb-16">
           <div className="flex items-center justify-center gap-4 mb-4">
-            <div className="h-px bg-primary/40 w-12" />
+            <div className="h-px bg-primary/40 w-8 sm:w-12" />
             <p className="text-primary text-xs font-medium tracking-[0.3em] uppercase">Contato</p>
-            <div className="h-px bg-primary/40 w-12" />
+            <div className="h-px bg-primary/40 w-8 sm:w-12" />
           </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-foreground mb-4 text-balance">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-foreground mb-4 text-balance">
             Agende seu horário
           </h2>
-          <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-            Entre em contato pelo WhatsApp ou visite nosso espaço. Estamos prontos para cuidar de você.
+          <p className="text-muted-foreground text-base sm:text-lg max-w-xl mx-auto">
+            Entre em contato pelo WhatsApp ou visite nosso espaço. Estamos prontas para cuidar de você.
           </p>
         </div>
 
         {/* Info cards */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        <div className="grid sm:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
           {infoCards.map(({ Icon, label, value, href }) => (
             <Link
               key={label}
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="group bg-secondary/40 rounded-2xl p-7 text-center border border-border hover:border-primary/30 hover:shadow-md transition-all duration-300"
+              className="group bg-secondary/40 rounded-2xl p-6 sm:p-7 text-center border border-border hover:border-primary/30 hover:shadow-md transition-all duration-300"
             >
-              <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
-                <Icon className="w-6 h-6 text-primary" />
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
+                <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
               </div>
-              <p className="text-xs font-medium tracking-[0.2em] uppercase text-muted-foreground mb-2">
-                {label}
-              </p>
+              <p className="text-xs font-medium tracking-[0.2em] uppercase text-muted-foreground mb-2">{label}</p>
               <p className="text-sm text-foreground leading-relaxed whitespace-pre-line">{value}</p>
             </Link>
           ))}
         </div>
 
         {/* Horários */}
-        <div className="bg-card rounded-2xl border border-border p-6 md:p-8 mb-10">
-          <div className="flex items-center gap-3 mb-6">
-            <Clock className="w-5 h-5 text-primary" />
-            <h3 className="font-serif font-semibold text-foreground">Horários de Atendimento</h3>
+        <div className="bg-card rounded-2xl border border-border p-5 sm:p-8 mb-6 sm:mb-10">
+          <div className="flex items-center gap-3 mb-5 sm:mb-6">
+            <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+            <h3 className="font-serif font-semibold text-foreground text-sm sm:text-base">Horários de Atendimento</h3>
           </div>
-          <div className="grid sm:grid-cols-3 gap-4">
+          <div className="grid sm:grid-cols-3 gap-3 sm:gap-4">
             {[
               { day: "Segunda a Sexta", hours: "09:00 – 19:00" },
-              { day: "Sábado", hours: "09:00 – 14:00" },
-              { day: "Domingo", hours: "Fechado" },
+              { day: "Sábado",          hours: "09:00 – 14:00" },
+              { day: "Domingo",         hours: "Fechado" },
             ].map(({ day, hours }) => (
-              <div key={day} className="bg-secondary/40 rounded-xl p-4">
+              <div key={day} className="bg-secondary/40 rounded-xl p-3 sm:p-4">
                 <p className="text-xs text-muted-foreground mb-1">{day}</p>
                 <p className="font-semibold text-foreground text-sm">{hours}</p>
               </div>
@@ -91,13 +74,13 @@ export function Contact() {
           </div>
         </div>
 
-        {/* CTA Banner — fiel ao flyer */}
-        <div className="bg-primary rounded-2xl p-6 md:p-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+        {/* CTA Banner */}
+        <div className="bg-primary rounded-2xl p-6 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-5">
           <div className="flex items-center gap-3">
-            <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-primary-foreground/70 shrink-0" aria-hidden="true">
-              <path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/>
+            <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 sm:w-6 sm:h-6 text-primary-foreground/70 shrink-0" aria-hidden="true">
+              <path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z" />
             </svg>
-            <p className="text-primary-foreground font-serif text-lg md:text-xl font-medium text-balance">
+            <p className="text-primary-foreground font-serif text-base sm:text-xl font-medium text-balance">
               Agende seu horário e viva a experiência de se cuidar!
             </p>
           </div>
@@ -105,7 +88,7 @@ export function Contact() {
             href={WA}
             target="_blank"
             rel="noopener noreferrer"
-            className="shrink-0 inline-flex items-center gap-2.5 bg-card text-foreground px-7 py-3.5 rounded-full text-sm font-medium hover:bg-card/90 transition-colors"
+            className="w-full sm:w-auto shrink-0 inline-flex items-center justify-center gap-2.5 bg-card text-foreground px-6 py-3.5 rounded-full text-sm font-medium hover:bg-card/90 transition-colors"
           >
             <WhatsAppIcon className="w-4 h-4" />
             Conversar no WhatsApp

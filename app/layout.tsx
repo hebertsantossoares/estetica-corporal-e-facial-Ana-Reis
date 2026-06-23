@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Playfair_Display, Lato } from 'next/font/google'
 import './globals.css'
+import { ThemeProvider } from '@/components/theme-provider'
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -31,7 +32,10 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#b8922a',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f9f4ee' },
+    { media: '(prefers-color-scheme: dark)',  color: '#1e1a16' },
+  ],
   width: 'device-width',
   initialScale: 1,
 }
@@ -40,11 +44,16 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-BR" className="bg-background">
-      <body
-        className={`${playfair.variable} ${lato.variable} font-sans antialiased`}
-      >
-        {children}
+    <html lang="pt-BR" suppressHydrationWarning>
+      <body className={`${playfair.variable} ${lato.variable} font-sans antialiased bg-background text-foreground`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange={false}
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )

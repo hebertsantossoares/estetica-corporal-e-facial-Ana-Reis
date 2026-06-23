@@ -17,11 +17,11 @@ export function Header() {
   }, [])
 
   const navLinks = [
-    { href: "#inicio", label: "Início" },
-    { href: "#sobre", label: "Sobre" },
-    { href: "#servicos", label: "Serviços" },
-    { href: "#beneficios", label: "Benefícios" },
-    { href: "#contato", label: "Contato" },
+    { href: "/", label: "Início" },
+    { href: "/#sobre", label: "Sobre" },
+    { href: "/#servicos", label: "Serviços" },
+    { href: "/estetica-corporal", label: "Estética Corporal" },
+    { href: "/#contato", label: "Contato" },
   ]
 
   return (

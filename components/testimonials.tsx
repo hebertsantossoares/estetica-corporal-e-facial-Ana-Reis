@@ -1,7 +1,7 @@
 const testimonials = [
   { name: "Mariana S.", text: "Melhor limpeza de pele que já fiz! A Ana é muito cuidadosa e atenciosa. Minha pele ficou incrível!", service: "Limpeza de Pele" },
   { name: "Juliana R.", text: "Ambiente super acolhedor e atendimento impecável. A depilação é maravilhosa, super recomendo!", service: "Depilação" },
-  { name: "Carolina M.", text: "Já sou cliente há mais de um ano. Os tratamentos fizeram uma diferença enorme na minha pele.", service: "Estética Facial" },
+  { name: "Carolina M.", text: "Sou a cliente numero um. Os tratamentos fizeram uma diferença enorme na minha pele.", service: "Estética Facial" },
   { name: "Fernanda T.", text: "Design de sobrancelha impecável! Finalmente encontrei alguém que entende o formato certo para o meu rosto.", service: "Design de Sobrancelhas" },
 ]
 

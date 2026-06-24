@@ -76,10 +76,22 @@ export function Footer() {
                   @studioanareis
                 </Link>
               </li>
-              <li className="flex items-start gap-2.5 text-sm text-background/60">
-                <MapPin className="w-4 h-4 shrink-0 mt-0.5" />
-                <span>Rua Elisete Cardoso, 86 — Sala 2<br />Júlio de Mesquita, Sorocaba – SP</span>
-              </li>
+              <li>
+                <Link
+                       href="https://www.google.com/maps/search/?api=1&query=Rua+Elisete+Cardoso+86+Sala+2+Julio+de+Mesquita+Sorocaba+SP"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       className="flex items-start gap-2.5 text-sm text-background/60 hover:text-primary transition-colors"
+              >
+    <MapPin className="w-4 h-4 shrink-0 mt-0.5" />
+
+    <span>
+      Rua Elisete Cardoso, 86 — Sala 2
+      <br />
+      Júlio de Mesquita, Sorocaba – SP
+    </span>
+  </Link>
+</li>
             </ul>
           </div>
         </div>

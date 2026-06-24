@@ -32,7 +32,7 @@ export function About() {
                 </h3>
 
                 <p className="tracking-[0.25em] uppercase text-xs mt-1 text-white/90">
-                  Esteticista
+                  Estetica corporal
                 </p>
               </div>
             </div>

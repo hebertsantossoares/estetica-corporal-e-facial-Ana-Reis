@@ -62,8 +62,8 @@ export function Contact() {
           </div>
           <div className="grid sm:grid-cols-3 gap-3 sm:gap-4">
             {[
-              { day: "Segunda a Sexta", hours: "09:00 – 19:00" },
-              { day: "Sábado",          hours: "09:00 – 14:00" },
+              { day: "Segunda a Sexta", hours: "014:00 – 20:00" },
+              { day: "Sábado",          hours: "08:00 – 16:00" },
               { day: "Domingo",         hours: "Fechado" },
             ].map(({ day, hours }) => (
               <div key={day} className="bg-secondary/40 rounded-xl p-3 sm:p-4">

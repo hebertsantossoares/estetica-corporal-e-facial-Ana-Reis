@@ -104,12 +104,7 @@ export function Hero() {
               <WhatsAppIcon />
               Agendar pelo WhatsApp
             </Link>
-            <Link
-              href="/agendar"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-primary/40 text-primary px-7 py-3.5 sm:py-4 rounded-full text-sm font-medium tracking-wide hover:bg-primary/5 transition-colors"
-            >
-              Agendar Online
-            </Link>
+           
           </div>
         </div>
       </div>

@@ -295,13 +295,7 @@ function ServiceModal({
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3">
-            <Link
-              href="/agendar"
-              className="flex-1 inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 py-3.5 rounded-full text-sm font-medium hover:opacity-90 transition-opacity"
-            >
-              Agendar Online
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+           
 
             <Link
               href={waLink}
